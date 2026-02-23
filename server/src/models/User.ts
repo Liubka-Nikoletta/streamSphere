@@ -10,19 +10,20 @@ interface IUser extends Document {
 const userSchema = new Schema<IUser>({
     userName: {
         type: String,
-        required: true
+        required: [true, 'User name is required'],
     },
     email: {
         type: String,
-        required: true,
+        required: [true, 'Email is required'],
         unique: true,
         lowercase: true,
-        trim: true
+        trim: true,
+        match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
     },
     password: {
         type: String,
-        required: true,
-        minlength: 6,
+        required: [true, 'Password is required'],
+        minlength: [6, 'Password must be at least 6 characters']
     }
 })
 
