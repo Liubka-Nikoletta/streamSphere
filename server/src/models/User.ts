@@ -5,6 +5,7 @@ interface IUser extends Document {
     userName: string;
     email: string;
     password: string;
+    comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userSchema = new Schema<IUser>({
@@ -23,7 +24,8 @@ const userSchema = new Schema<IUser>({
     password: {
         type: String,
         required: [true, 'Password is required'],
-        minlength: [6, 'Password must be at least 6 characters']
+        minlength: [6, 'Password must be at least 6 characters'],
+        select: false,
     }
 })
 
@@ -36,5 +38,9 @@ userSchema.pre<IUser>('save', async function () {
         throw err;
     }
 })
+
+userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
+    return await bcrypt.compare(candidatePassword, this.password);
+}
 
 export const User = model<IUser>('User', userSchema);
