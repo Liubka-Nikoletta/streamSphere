@@ -1,6 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import {User} from '../models/User.js';
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
