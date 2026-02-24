@@ -37,3 +37,4 @@ export const loginUser = async(req: Request, res: Response, next: NextFunction) 
        res.status(401).json({message: 'Invalid email or password'});
    }
 }
+

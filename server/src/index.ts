@@ -1,7 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import connectToStreamSchemeDB from "./db.js";
-import userRouters from './routes/userRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import watchListRouter from './routes/watchListRoutes.js';
 
 dotenv.config();
 
@@ -11,7 +12,8 @@ connectToStreamSchemeDB();
 
 app.use(express.json());
 
-app.use('/api/users', userRouters);
+app.use('/api/users', userRouter);
+app.use('/api/watchList', watchListRouter);
 
 const port = process.env.PORT || 5000;
 

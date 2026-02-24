@@ -5,6 +5,7 @@ interface IUser extends Document {
     userName: string;
     email: string;
     password: string;
+    watchList: string[];
     comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -26,6 +27,10 @@ const userSchema = new Schema<IUser>({
         required: [true, 'Password is required'],
         minlength: [6, 'Password must be at least 6 characters'],
         select: false,
+    },
+    watchList: {
+        type: [String],
+        default: []
     }
 })
 
