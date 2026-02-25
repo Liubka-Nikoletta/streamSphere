@@ -11,7 +11,6 @@ const Home = () => {
                 <Hero/>
                 <CategoryBar/>
                 <MovieRow title="Popular now"/>
-                <MovieRow title="Top rating"/>
             </main>
         </div>
     );
