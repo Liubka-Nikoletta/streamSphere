@@ -6,7 +6,7 @@ interface ButtonProps{
     onClick?: () => void,
 }
 
-const Button = ({name, type="button", variant="primary", size="md"}: ButtonProps) => {
+const Button = ({name, type="button", variant="primary", size="md", onClick}: ButtonProps) => {
     const sizes = {
         sm: "px-2 py-1 text-xs",
         md: "px-4 py-2 text-sm",
@@ -23,6 +23,7 @@ const Button = ({name, type="button", variant="primary", size="md"}: ButtonProps
     return (
         <button
             type={type}
+            onClick={onClick}
             className={`flex items-center justify-center gap-2 rounded-md font-bold transition-all active:scale-95 ${sizes[size]} ${variants[variant]}`}
         >
             {name}

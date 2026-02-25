@@ -1,5 +1,6 @@
 import Header from "../components/Header.tsx";
 import Hero from "../components/Hero";
+import CategoryBar from "../components/CategoryBar.tsx";
 
 const Home = () => {
     return (
@@ -7,6 +8,7 @@ const Home = () => {
             <Header />
             <main>
                 <Hero/>
+                <CategoryBar/>
             </main>
         </div>
     );
