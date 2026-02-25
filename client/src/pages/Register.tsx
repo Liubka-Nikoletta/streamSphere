@@ -59,7 +59,7 @@ const Register = () => {
                            value={formData.password}
                            onChange={handleChange}/>
                     <div>
-                       <Button name="Sign Up" type="submit"/>
+                       <Button name="Sign Up" type="submit" size="full"/>
                     </div>
                 </form>
                 <p className="mt-10 text-center text-sm/6 text-gray-400">

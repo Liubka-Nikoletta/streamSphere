@@ -52,7 +52,7 @@ const Login = () => {
                            value={formData.password}
                            onChange={handleChange}/>
                     <div>
-                        <Button name="Log in" type="submit"/>
+                        <Button name="Log in" type="submit" size="full"/>
                     </div>
                 </form>
                 <p className="mt-10 text-center text-sm/6 text-gray-400">

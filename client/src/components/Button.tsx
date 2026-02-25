@@ -24,7 +24,7 @@ const Button = ({name, type="button", variant="primary", size="md", onClick}: Bu
         <button
             type={type}
             onClick={onClick}
-            className={`flex items-center justify-center gap-2 rounded-md font-bold transition-all active:scale-95 ${sizes[size]} ${variants[variant]}`}
+            className={`flex items-center justify-center gap-2 rounded-md font-bold transition-all active:scale-95 ${sizes[size]} ${variants[variant]} ${size === 'full' ? 'w-full' : 'w-full md:w-fit'}`}
         >
             {name}
         </button>
