@@ -2,6 +2,7 @@ import {useState} from 'react';
 import api from '../api/axios';
 import Input from '../components/Input.tsx'
 import Button from "../components/Button.tsx";
+import {Link} from "react-router-dom";
 
 interface IRegisterFormData {
     userName: string;
@@ -23,8 +24,7 @@ const Register = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try{
-            const response = await api.post('/users/createUser', formData);
-            localStorage.setItem('token', response.data.token);
+            await api.post('/users/createUser', formData);
            console.log('Successfully created user');
         }catch(error){
             console.log('Error creating user');
@@ -59,9 +59,13 @@ const Register = () => {
                            value={formData.password}
                            onChange={handleChange}/>
                     <div>
-                       <Button name="Log in" type="submit"/>
+                       <Button name="Sign Up" type="submit"/>
                     </div>
                 </form>
+                <p className="mt-10 text-center text-sm/6 text-gray-400">
+                    Already have an account?{' '}
+                    <Link to="/users/login" className="font-semibold text-red-400 hover:text-red-300">Log in</Link>
+                </p>
             </div>
         </section>
     );
