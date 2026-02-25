@@ -3,4 +3,15 @@
 @theme{
     --color-dark: #0A0A0A;
     --color-accent: #B20710;
+
+    --background-image-main-gradient: radial-gradient(circle at 50% 0%, #440000 0%, #000000 85%);
+}
+
+@layer base {
+    html, body, #root {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+    }
 }

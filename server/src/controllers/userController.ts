@@ -10,9 +10,19 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 
         await newUser.save();
 
-        res.status(201).json(newUser);
-    } catch (err){
-        res.status(400).send({message: 'Помилка при створенні' });
+        res.status(201).json(
+            {
+                _id: newUser._id,
+                userName: newUser.userName,
+                email: newUser.email,
+                watchList: newUser.watchList
+            }
+        );
+    } catch (err: any){
+        if (err.code === 11000) {
+            return res.status(409).json({ message: 'This email is already registered.' });
+        }
+        res.status(400).send({ message: 'Error while creating' });
     }
 }
 

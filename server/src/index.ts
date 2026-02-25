@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import connectToStreamSchemeDB from "./db.js";
 import userRouter from './routes/userRoutes.js';
 import watchListRouter from './routes/watchListRoutes.js';
@@ -10,6 +11,7 @@ const app = express();
 
 connectToStreamSchemeDB();
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/users', userRouter);
