@@ -1,18 +1,27 @@
 import Button from "./Button.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {fetchGenres} from "../api/tmdb.ts";
+import type {IGenre} from "../types/genre.ts";
 
 const CategoryBar = () => {
-    const categories = ["All", "Action movie", "Comedy", "Drama", "Horrors", "Fantasy", "Melodrama", "Documentary"];
+    const [genres, setGenres] = useState<IGenre[]>([]);
+    const [activeCategory, setActiveCategory] = useState<string | number>("All");
 
-    const [activeCategory, setActiveCategory] = useState("All");
+    useEffect(() => {
+        const getCategories = async () => {
+            const data = await fetchGenres();
+            setGenres([{id: "All", name: "All"}, ...data]);
+        }
+        getCategories();
+    }, [])
 
     return (
         <ul className="flex justify-center p-10 gap-9 flex-wrap">
-            {categories.map((category) => (
-                <li key={category}>
-                    <Button name={category}
-                    variant={activeCategory === category ? "primary" : "secondary"}
-                    onClick={() => setActiveCategory(category)}/>
+            {genres.map((genre) => (
+                <li key={genre.id}>
+                    <Button name={genre.name}
+                    variant={activeCategory === genre.id ? "primary" : "secondary"}
+                    onClick={() => setActiveCategory(genre.id)}/>
                 </li>
             ))}
         </ul>

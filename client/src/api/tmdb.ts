@@ -56,3 +56,17 @@ export const fetchMovieDetails = async (id: number) => {
         return null;
     }
 }
+
+export const fetchGenres = async () => {
+    try{
+        const response = await tmdbApi.get('genre/movie/list', {
+            params: {
+                language: 'en-US'
+            }
+        });
+        return response.data.genres;
+    }catch(error){
+        console.error("TMDB Error:", error);
+        return [];
+    }
+}
