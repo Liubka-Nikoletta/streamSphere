@@ -12,12 +12,12 @@ const tmdbApi = axios.create({
     }
 })
 
-export const fetchPopularMovies = async (): Promise<IMovie[]> => {
+export const fetchPopularMovies = async (page: number = 1): Promise<IMovie[]> => {
     try{
         const response = await tmdbApi.get('/movie/popular', {
             params: {
                 language: 'en-US',
-                page: 1
+                page: page
             }
         });
         return response.data.results;
