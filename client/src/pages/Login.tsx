@@ -1,33 +1,31 @@
-import {useState} from 'react';
-import api from '../api/axios';
-import Input from '../components/Input.tsx'
+import Input from "../components/Input.tsx";
 import Button from "../components/Button.tsx";
+import {useState} from "react";
+import api from '../api/axios';
 
-interface IRegisterFormData {
-    userName: string;
+interface ILoginFormData {
     password: string;
     email: string;
 }
 
-const Register = () => {
-    const [formData, setFormData] = useState<IRegisterFormData>({
-        userName: '',
-        password: '',
+const Login = () => {
+    const [formData, setFormData] = useState<ILoginFormData>({
         email: '',
-    });
+        password: '',
+    })
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [event.target.name]: event.target.value});
     }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+        event.preventDefault()
         try{
-            const response = await api.post('/users/createUser', formData);
+            const response = await api.post("/users/login", formData);
             localStorage.setItem('token', response.data.token);
-           console.log('Successfully created user');
+            console.log('login successful');
         }catch(error){
-            console.log('Error creating user');
+            console.log('Error logging in', error);
         }
     }
 
@@ -38,12 +36,6 @@ const Register = () => {
             </section>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form method="POST" onSubmit={handleSubmit} className="space-y-6">
-                    <Input id="userName"
-                           label="Name:"
-                           name="userName"
-                           placeholder="Enter your name"
-                           value={formData.userName}
-                           onChange={handleChange}/>
                     <Input id="email"
                            label="Email:"
                            name="email"
@@ -59,7 +51,7 @@ const Register = () => {
                            value={formData.password}
                            onChange={handleChange}/>
                     <div>
-                       <Button name="Log in" type="submit"/>
+                        <Button name="Log in" type="submit"/>
                     </div>
                 </form>
             </div>
@@ -67,4 +59,4 @@ const Register = () => {
     );
 }
 
-export default Register;
+export default Login;
