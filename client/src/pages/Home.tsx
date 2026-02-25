@@ -1,6 +1,7 @@
 import Header from "../components/Header.tsx";
 import Hero from "../components/Hero";
 import CategoryBar from "../components/CategoryBar.tsx";
+import MovieRow from "../components/MovieRow.tsx";
 
 const Home = () => {
     return (
@@ -9,6 +10,8 @@ const Home = () => {
             <main>
                 <Hero/>
                 <CategoryBar/>
+                <MovieRow title="Popular now"/>
+                <MovieRow title="Top rating"/>
             </main>
         </div>
     );
