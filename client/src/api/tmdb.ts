@@ -26,3 +26,33 @@ export const fetchPopularMovies = async (): Promise<IMovie[]> => {
         return [];
     }
 }
+
+export const fetchTrendingMovie = async (): Promise<IMovie[]> => {
+    try{
+        const response = await tmdbApi.get('/trending/movie/day', {
+            params: {
+                language: 'en-US',
+                page: 1
+            }
+        });
+        return response.data.results;
+    }catch(error){
+        console.error("TMDB Error:", error);
+        return [];
+    }
+}
+
+
+export const fetchMovieDetails = async (id: number) => {
+    try {
+        const response = await tmdbApi.get(`/movie/${id}`, {
+            params: {
+                language: 'en-US'
+            }
+        });
+        return response.data;
+    }catch(error){
+        console.error("TMDB Error:", error);
+        return null;
+    }
+}

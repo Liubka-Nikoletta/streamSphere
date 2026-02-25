@@ -1,10 +1,34 @@
+import {useEffect, useState} from "react";
 import Button from "../components/Button";
+import type {IMovie} from "../types/movie.ts";
+import {fetchTrendingMovie, fetchMovieDetails} from "../api/tmdb.ts";
 
 const Hero = () => {
+    const [trendingMovie, setTrendingMovie] = useState<IMovie | null>(null);
+
+    useEffect(() => {
+        const getMovie = async () => {
+            const results = await fetchTrendingMovie();
+            if (results && results.length > 0) {
+                const movieDetails = await fetchMovieDetails(results[0].id);
+                setTrendingMovie(movieDetails);
+            }
+        }
+        getMovie();
+    }, []);
+
+    if (!trendingMovie) return <div className="h-[85vh] w-full bg-black"></div>;
+
+    const backgroundUrl = `https://image.tmdb.org/t/p/original${trendingMovie.backdrop_path}`;
+    const genres = trendingMovie.genres?.slice(0, 2).map(g => g.name).join(' / ');
+    const hours = Math.floor((trendingMovie.runtime || 0) / 60);
+    const minutes = (trendingMovie.runtime || 0) % 60;
+    const duration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+
     return(
         <section className="relative h-[85vh] w-full bg-black overflow-hidden">
             <div className="absolute inset-0 bg-cover bg-center"
-                 style={{ backgroundImage: "url('banner.jpg')" }}>
+                 style={{ backgroundImage: `url('${backgroundUrl}')` }}>
 
                 <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 via-black/60 to-transparent"></div>
 
@@ -16,19 +40,18 @@ const Hero = () => {
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bebas text-white mb-4 tracking-wider uppercase drop-shadow-md">
-                    Oppenheimer
+                    {trendingMovie.title}
                 </h1>
 
                 <div className="flex items-center gap-3 md:gap-4 text-gray-300 text-xs md:text-sm mb-6">
-                    <span className="text-yellow-400 font-bold">★ 8.9</span>
-                    <span>2023</span>
-                    <span className="hidden sm:inline">180 хв</span>
-                    <span>Драма / Біографія</span>
-                    <span className="border border-gray-600 px-1 text-[10px] rounded">16+</span>
+                    <span className="text-yellow-400 font-bold">{trendingMovie.vote_average}</span>
+                    <span>{trendingMovie.release_date.split('-')[0]}</span>
+                    <span className="hidden sm:inline">{duration}</span>
+                    <span>{genres}</span>
                 </div>
 
                 <p className="text-gray-300 text-sm md:text-base leading-relaxed max-w-xl mb-8 line-clamp-3 md:line-clamp-none">
-                    Захоплива розповідь про J. Robert Oppenheimer — фізика, що очолив Manhattan Project і змінив хід Другої світової війни, створивши найпотужнішу зброю в історії людства.
+                    {trendingMovie.overview}
                 </p>
 
                 <div className="flex flex-wrap gap-4">
