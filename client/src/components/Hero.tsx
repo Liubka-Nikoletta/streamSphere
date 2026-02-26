@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import Button from "../components/Button";
 import type {IMovie} from "../types/movie.ts";
 import {fetchTrendingMovie, fetchMovieDetails} from "../api/tmdb.ts";
+import {Link} from "react-router-dom";
 
 const Hero = () => {
     const [trendingMovie, setTrendingMovie] = useState<IMovie | null>(null);
@@ -55,7 +56,7 @@ const Hero = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-4">
-                    <Button name="Trailer" size="lg"/>
+                    <Link to={`/movie/${trendingMovie.id}`}><Button name="Detail" size="lg"/></Link>
                     <Button name="+ Add to list" size="lg" variant="secondary"/>
                 </div>
             </div>

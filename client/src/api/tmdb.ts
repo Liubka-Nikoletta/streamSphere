@@ -14,10 +14,16 @@ const tmdbApi = axios.create({
 
 export const fetchPopularMovies = async (page: number = 1): Promise<IMovie[]> => {
     try{
-        const response = await tmdbApi.get('/movie/popular', {
+        const today = new Date().toISOString().split('T')[0];
+
+        const response = await tmdbApi.get('/discover/movie', {
             params: {
                 language: 'en-US',
-                page: page
+                page: page,
+                sort_by: 'popularity.desc',
+                'release_date.lte': today,
+                with_release_type: '2|3',
+                include_video: true
             }
         });
         return response.data.results;
@@ -47,7 +53,8 @@ export const fetchMovieDetails = async (id: number) => {
     try {
         const response = await tmdbApi.get(`/movie/${id}`, {
             params: {
-                language: 'en-US'
+                language: 'en-US',
+                append_to_response: 'credits,recommendations,videos'
             }
         });
         return response.data;

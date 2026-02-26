@@ -6,6 +6,25 @@ export interface IMovie {
     release_date: string,
     overview: string,
     backdrop_path: string,
-    runtime?: number;
-    genres?: { id: number; name: string }[];
+    runtime?: number,
+    genres?: { id: number; name: string }[],
+    credits?: {
+        cast: {
+            id: number;
+            name: string;
+            character: string;
+        }[];
+    },
+    recommendations?: {
+        results: IMovie[];
+    },
+    tagline?: string,
+    videos?: {
+        results: {
+            key: string;
+            site: string;
+            type: string;
+            official: boolean;
+        }[];
+    };
 }
