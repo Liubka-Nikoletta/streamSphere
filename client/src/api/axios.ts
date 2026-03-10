@@ -14,14 +14,14 @@ api.interceptors.request.use(
         return config;
     },
     (error) => {
-        console.log("Деталі помилки:", error.response?.data);
+        console.log("Error:", error.response?.data);
         return Promise.reject(error);
     }
 )
 
 api.interceptors.response.use(
     (response) => response,
-    (error) => {console.log("Деталі помилки:", error.response?.data); return Promise.reject(error);}
+    (error) => {console.log("Error:", error.response?.data); return Promise.reject(error);}
 )
 
 export default api;

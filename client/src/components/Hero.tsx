@@ -3,9 +3,12 @@ import Button from "../components/Button";
 import type {IMovie} from "../types/movie.ts";
 import {fetchTrendingMovie, fetchMovieDetails} from "../api/tmdb.ts";
 import {Link} from "react-router-dom";
+import {useAuthCheck} from "../hooks/useAuthCheck.ts";
+import toast from "react-hot-toast";
 
 const Hero = () => {
     const [trendingMovie, setTrendingMovie] = useState<IMovie | null>(null);
+    const {executeProtectedAction} = useAuthCheck();
 
     useEffect(() => {
         const getMovie = async () => {
@@ -17,6 +20,12 @@ const Hero = () => {
         }
         getMovie();
     }, []);
+
+    const handleAddClick = () => {
+        executeProtectedAction(() => {
+            toast.success("Movie added");
+        })
+    }
 
     if (!trendingMovie) return <div className="h-[85vh] w-full bg-black"></div>;
 
@@ -57,7 +66,7 @@ const Hero = () => {
 
                 <div className="flex flex-wrap gap-4">
                     <Link to={`/movie/${trendingMovie.id}`}><Button name="Detail" size="lg"/></Link>
-                    <Button name="+ Add to list" size="lg" variant="secondary"/>
+                    <Button onClick={handleAddClick} name="+ Add to list" size="lg" variant="secondary"/>
                 </div>
             </div>
         </section>
