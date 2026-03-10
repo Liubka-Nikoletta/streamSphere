@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import api from '../api/axios';
 import {useParams} from "react-router-dom";
 import Header from "../components/Header";
 import Button from "../components/Button";
@@ -25,9 +26,19 @@ const MovieDetail = () => {
     }, [id]);
 
     const handleAddClick = () => {
-        executeProtectedAction(() => {
-            toast.success("Movie added");
-        })
+        if(movie){
+            executeProtectedAction(async () => {
+                try{
+                    await api.post("/watchList/add", { movieId: movie.id });
+                    toast.success("Movie added");
+                } catch (error) {
+                    toast.error("Error adding movie");
+                    console.log(error);
+                }
+            })
+        } else{
+            toast.error("Movie not found");
+        }
     }
 
     if (!movie) return <div className="h-[85vh] w-full bg-black"></div>;

@@ -5,6 +5,7 @@ import {fetchTrendingMovie, fetchMovieDetails} from "../api/tmdb.ts";
 import {Link} from "react-router-dom";
 import {useAuthCheck} from "../hooks/useAuthCheck.ts";
 import toast from "react-hot-toast";
+import api from "../api/axios.ts";
 
 const Hero = () => {
     const [trendingMovie, setTrendingMovie] = useState<IMovie | null>(null);
@@ -22,9 +23,19 @@ const Hero = () => {
     }, []);
 
     const handleAddClick = () => {
-        executeProtectedAction(() => {
-            toast.success("Movie added");
-        })
+        if(trendingMovie){
+            executeProtectedAction(async () => {
+                try{
+                    await api.post("/watchList/add", { movieId: trendingMovie.id });
+                    toast.success("Movie added");
+                } catch (error) {
+                    toast.error("Error adding movie");
+                    console.log(error);
+                }
+            })
+        } else{
+            toast.error("Movie not found");
+        }
     }
 
     if (!trendingMovie) return <div className="h-[85vh] w-full bg-black"></div>;

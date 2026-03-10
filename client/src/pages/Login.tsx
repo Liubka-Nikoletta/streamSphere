@@ -2,7 +2,9 @@ import Input from "../components/Input.tsx";
 import Button from "../components/Button.tsx";
 import {useState} from "react";
 import api from '../api/axios';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuthCheck} from "../hooks/useAuthCheck.ts";
+import toast from 'react-hot-toast';
 
 interface ILoginFormData {
     password: string;
@@ -15,6 +17,9 @@ const Login = () => {
         password: '',
     })
 
+    const navigate = useNavigate();
+    const {logIn} = useAuthCheck();
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [event.target.name]: event.target.value});
     }
@@ -23,9 +28,10 @@ const Login = () => {
         event.preventDefault()
         try{
             const response = await api.post("/users/login", formData);
-            localStorage.setItem('token', response.data.token);
-            console.log('login successful');
+            logIn(response.data.token);
+            navigate("/");
         }catch(error){
+            toast.error('Error logging in');
             console.log('Error logging in', error);
         }
     }

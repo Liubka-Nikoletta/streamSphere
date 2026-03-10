@@ -2,10 +2,14 @@ import {Link} from "react-router-dom";
 import Input from "../components/Input";
 import {useState} from "react";
 import {Menu, User, X} from 'lucide-react';
+import {useAuthCheck} from "../hooks/useAuthCheck.ts";
 
 const Header = () => {
     const [searchText, setSearchText] = useState<string>("");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const {isLoggedIn, logOut} = useAuthCheck();
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+
 
     return (
         <>
@@ -31,9 +35,41 @@ const Header = () => {
                         />
                     </div>
 
-                    <div className="hidden md:flex w-8 h-8 md:w-9 md:h-9 bg-red-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-lg shadow-red-900/20">
+                    <div
+                        onClick={() => setIsProfileOpen(!isProfileOpen)}
+                        className="hidden md:flex w-8 h-8 md:w-9 md:h-9 bg-red-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-lg shadow-red-900/20">
                         <User size={18} strokeWidth={2.5} />
                     </div>
+
+                    {isProfileOpen && (
+                        <div className="absolute top-12 right-1 mt-3 w-40 bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200">
+                            {isLoggedIn ? (
+                                <>
+                                    <div className="px-4 py-2 border-b border-white/10">
+                                        <p className="text-xs text-gray-400">Signed in as</p>
+                                        <p className="text-sm font-bold text-white truncate">User Name</p>
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            logOut();
+                                            setIsProfileOpen(false);
+                                        }}
+                                        className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 transition-colors"
+                                    >
+                                        Sign Out
+                                    </button>
+                                </>
+                            ) : (
+                                <Link
+                                    to="/users/login"
+                                    className="block px-4 py-2 text-sm text-white font-bold hover:bg-red-600 transition-colors text-center"
+                                    onClick={() => setIsProfileOpen(false)}
+                                >
+                                    Login / Sign Up
+                                </Link>
+                            )}
+                        </div>
+                    )}
 
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)}
                         className="block md:hidden text-white">

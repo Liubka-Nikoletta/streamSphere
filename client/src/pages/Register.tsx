@@ -2,7 +2,9 @@ import {useState} from 'react';
 import api from '../api/axios';
 import Input from '../components/Input.tsx'
 import Button from "../components/Button.tsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuthCheck} from "../hooks/useAuthCheck.ts";
+import toast from "react-hot-toast";
 
 interface IRegisterFormData {
     userName: string;
@@ -17,6 +19,9 @@ const Register = () => {
         email: '',
     });
 
+    const navigate = useNavigate();
+    const {logIn} = useAuthCheck();
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [event.target.name]: event.target.value});
     }
@@ -24,9 +29,12 @@ const Register = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try{
-            await api.post('/users/createUser', formData);
-           console.log('Successfully created user');
+            const response = await api.post('/users/createUser', formData);
+            logIn(response.data.token);
+            navigate("/");
+            console.log('Successfully created user');
         }catch(error){
+            toast.error('Error logging in');
             console.log('Error creating user');
         }
     }
