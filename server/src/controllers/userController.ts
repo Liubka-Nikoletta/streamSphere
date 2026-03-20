@@ -42,7 +42,14 @@ export const loginUser = async(req: Request, res: Response, next: NextFunction) 
            {expiresIn: '24h'}
        )
 
-       res.json({token});
+       res.json({
+           token,
+           user: {
+               id: user._id,
+               userName: user.userName,
+               email: user.email
+           }});
+
    }catch(err){
        res.status(401).json({message: 'Invalid email or password'});
    }

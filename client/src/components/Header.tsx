@@ -7,9 +7,8 @@ import {useAuthCheck} from "../hooks/useAuthCheck.ts";
 const Header = () => {
     const [searchText, setSearchText] = useState<string>("");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const {isLoggedIn, logOut} = useAuthCheck();
+    const {isLoggedIn, logOut, user} = useAuthCheck();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
-
 
     return (
         <>
@@ -47,7 +46,9 @@ const Header = () => {
                                 <>
                                     <div className="px-4 py-2 border-b border-white/10">
                                         <p className="text-xs text-gray-400">Signed in as</p>
-                                        <p className="text-sm font-bold text-white truncate">User Name</p>
+                                        {user && (
+                                            <p className="text-sm font-bold text-white truncate">{user.name}</p>
+                                        )}
                                     </div>
                                     <button
                                         onClick={() => {

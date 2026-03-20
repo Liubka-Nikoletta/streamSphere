@@ -28,7 +28,7 @@ const Login = () => {
         event.preventDefault()
         try{
             const response = await api.post("/users/login", formData);
-            logIn(response.data.token);
+            logIn(response.data.token, response.data.user);
             navigate("/");
         }catch(error){
             toast.error('Error logging in');

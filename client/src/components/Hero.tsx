@@ -47,9 +47,10 @@ const Hero = () => {
     const duration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 
     return(
-        <section className="relative h-[85vh] w-full bg-black overflow-hidden">
+        <section className="relative h-[calc(100vh-80px)] mt-[80px] w-full bg-black overflow-hidden">
             <div className="absolute inset-0 bg-cover bg-center"
-                 style={{ backgroundImage: `url('${backgroundUrl}')` }}>
+                 style={{ backgroundImage: `url('${backgroundUrl}')`,
+                     backgroundPosition: 'top center'}}>
 
                 <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 via-black/60 to-transparent"></div>
 

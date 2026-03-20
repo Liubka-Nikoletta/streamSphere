@@ -48,7 +48,7 @@ const MovieDetail = () => {
     const hours = Math.floor((movie.runtime || 0) / 60);
     const minutes = (movie.runtime || 0) % 60;
     const duration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-    const castNames = movie.credits?.cast?.slice(0, 7).map(actor => actor.name) || [];
+    const castNames = movie.credits?.cast?.slice(0, 7) || [];
     const trailer = movie.videos?.results.find(
         vid => vid.type === "Trailer" && vid.site === "YouTube"
     );
@@ -56,9 +56,9 @@ const MovieDetail = () => {
     return(
         <>
             <Header/>
-            <section className="relative h-[85vh] w-full bg-black overflow-hidden">
+            <section className="relative h-[calc(100vh-80px)] mt-[80px] w-full bg-black overflow-hidden">
                 <div className="absolute inset-0 bg-cover bg-center"
-                     style={{ backgroundImage: `url('${backgroundUrl}')` }}>
+                     style={{ backgroundImage: `url('${backgroundUrl}')`, backgroundPosition: 'top center' }}>
 
                     <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 via-black/60 to-transparent"></div>
 
@@ -86,9 +86,9 @@ const MovieDetail = () => {
                 </div>
             </section>
             <ul className="flex p-10 gap-9 flex-wrap justify-center">
-                {castNames.map((name) => (
-                    <li>
-                        <Button name={name} variant="secondary"/>
+                {castNames.map((actor) => (
+                    <li key={actor.id}>
+                        <Button name={actor.name} variant="secondary"/>
                     </li>
                 ))}
             </ul>

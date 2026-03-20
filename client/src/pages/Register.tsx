@@ -30,7 +30,7 @@ const Register = () => {
         event.preventDefault();
         try{
             const response = await api.post('/users/createUser', formData);
-            logIn(response.data.token);
+            logIn(response.data.token, response.data.user);
             navigate("/");
             console.log('Successfully created user');
         }catch(error){
