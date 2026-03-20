@@ -47,7 +47,7 @@ const Header = () => {
                                     <div className="px-4 py-2 border-b border-white/10">
                                         <p className="text-xs text-gray-400">Signed in as</p>
                                         {user && (
-                                            <p className="text-sm font-bold text-white truncate">{user.name}</p>
+                                            <p className="text-sm font-bold text-white truncate">{user.userName}</p>
                                         )}
                                     </div>
                                     <button
