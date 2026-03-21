@@ -48,7 +48,6 @@ export const fetchTrendingMovie = async (): Promise<IMovie[]> => {
     }
 }
 
-
 export const fetchMovieDetails = async (id: number) => {
     try {
         const response = await tmdbApi.get(`/movie/${id}`, {

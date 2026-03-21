@@ -6,6 +6,7 @@ import Movies from "./pages/Movies.tsx";
 import MovieDetail from "./pages/MovieDetail.tsx";
 import {Toaster} from "react-hot-toast";
 import {AuthProvider} from "./context/AuthContext.tsx";
+import WatchList from "./pages/WatchList.tsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
                       <Route path="/users/login" element={<Login/>}/>
                       <Route path="/movies" element={<Movies/>}/>
                       <Route path="/movie/:id" element={<MovieDetail />} />
+                      <Route path="/watchList" element={<WatchList/>} />
                   </Routes>
               </BrowserRouter>
           </AuthProvider>

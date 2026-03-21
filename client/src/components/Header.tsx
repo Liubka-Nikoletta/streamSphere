@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Input from "../components/Input";
 import {useState} from "react";
 import {Menu, User, X} from 'lucide-react';
@@ -9,6 +9,7 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {isLoggedIn, logOut, user} = useAuthCheck();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -54,6 +55,7 @@ const Header = () => {
                                         onClick={() => {
                                             logOut();
                                             setIsProfileOpen(false);
+                                            navigate("/users/login");
                                         }}
                                         className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 transition-colors"
                                     >

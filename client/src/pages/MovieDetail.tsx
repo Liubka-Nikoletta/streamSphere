@@ -60,8 +60,7 @@ const MovieDetail = () => {
                 <div className="absolute inset-0 bg-cover bg-center"
                      style={{ backgroundImage: `url('${backgroundUrl}')`, backgroundPosition: 'top center' }}>
 
-                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 via-black/60 to-transparent"></div>
-
+                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
                 </div>
                 <div className="relative z-10 flex h-full flex-col justify-center px-6 md:px-12 lg:w-2/3 text-left">

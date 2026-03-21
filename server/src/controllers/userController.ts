@@ -47,7 +47,8 @@ export const loginUser = async(req: Request, res: Response, next: NextFunction) 
            user: {
                id: user._id,
                userName: user.userName,
-               email: user.email
+               email: user.email,
+               watchList: user.watchList
            }});
 
    }catch(err){
