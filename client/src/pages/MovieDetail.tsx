@@ -1,18 +1,16 @@
 import {useEffect, useState} from "react";
-import api from '../api/axios';
 import {useParams} from "react-router-dom";
 import Header from "../components/Header";
 import Button from "../components/Button";
 import type {IMovie} from "../types/movie.ts";
 import {fetchMovieDetails} from "../api/tmdb.ts";
 import MovieCard from "../components/MovieCard.tsx";
-import {useAuthCheck} from "../hooks/useAuthCheck.ts";
-import toast from 'react-hot-toast';
+import {useWatchlist} from "../hooks/useWatchlist.ts";
 
 const MovieDetail = () => {
     const {id} = useParams<{id: string}>();
     const [movie, setMovie] = useState<IMovie | null>(null);
-    const {executeProtectedAction} = useAuthCheck();
+    const {isAdded, toggleWatchlist} = useWatchlist(movie?.id);
 
     useEffect(() => {
         const getMovie = async () => {
@@ -24,22 +22,6 @@ const MovieDetail = () => {
         }
         getMovie();
     }, [id]);
-
-    const handleAddClick = () => {
-        if(movie){
-            executeProtectedAction(async () => {
-                try{
-                    await api.post("/watchList/add", { movieId: movie.id });
-                    toast.success("Movie added");
-                } catch (error) {
-                    toast.error("Error adding movie");
-                    console.log(error);
-                }
-            })
-        } else{
-            toast.error("Movie not found");
-        }
-    }
 
     if (!movie) return <div className="h-[85vh] w-full bg-black"></div>;
 
@@ -80,7 +62,11 @@ const MovieDetail = () => {
                     </p>
 
                     <div className="flex flex-wrap gap-4">
-                        <Button onClick={handleAddClick} name="+ Add to list" size="lg"/>
+                        {isAdded ?
+                            <Button onClick={toggleWatchlist} name="Remove from list" size="lg" variant="secondary"/> :
+                            <Button onClick={toggleWatchlist} name="+ Add to list" size="lg"/>
+                        }
+
                     </div>
                 </div>
             </section>

@@ -6,6 +6,7 @@ interface IAuthContext {
     logOut: () => void;
     isLoggedIn: boolean;
     user: IUser | null;
+    updateUser: (userData: IUser) => void;
 }
 
 export const AuthContext = createContext<IAuthContext | null>(null);
@@ -51,8 +52,13 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         return <div>Checking authorization...</div>;
     }
 
+    const updateUser = (user: IUser) => {
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
     return (
-        <AuthContext.Provider value={{logIn, isLoggedIn, logOut, user}}>
+        <AuthContext.Provider value={{logIn, isLoggedIn, logOut, user, updateUser}}>
             {children}
         </AuthContext.Provider>
     );

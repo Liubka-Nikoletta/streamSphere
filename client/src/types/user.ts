@@ -2,5 +2,5 @@ export interface IUser {
     id: number;
     userName: string;
     email: string;
-    watchList: [];
+    watchList: number[];
 }

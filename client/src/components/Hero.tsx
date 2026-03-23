@@ -3,13 +3,11 @@ import Button from "../components/Button";
 import type {IMovie} from "../types/movie.ts";
 import {fetchTrendingMovie, fetchMovieDetails} from "../api/tmdb.ts";
 import {Link} from "react-router-dom";
-import {useAuthCheck} from "../hooks/useAuthCheck.ts";
-import toast from "react-hot-toast";
-import api from "../api/axios.ts";
+import {useWatchlist} from "../hooks/useWatchlist.ts";
 
 const Hero = () => {
     const [trendingMovie, setTrendingMovie] = useState<IMovie | null>(null);
-    const {executeProtectedAction} = useAuthCheck();
+    const {isAdded, toggleWatchlist} = useWatchlist(trendingMovie?.id)
 
     useEffect(() => {
         const getMovie = async () => {
@@ -21,22 +19,6 @@ const Hero = () => {
         }
         getMovie();
     }, []);
-
-    const handleAddClick = () => {
-        if(trendingMovie){
-            executeProtectedAction(async () => {
-                try{
-                    await api.post("/watchList/add", { movieId: trendingMovie.id });
-                    toast.success("Movie added");
-                } catch (error) {
-                    toast.error("Error adding movie");
-                    console.log(error);
-                }
-            })
-        } else{
-            toast.error("Movie not found");
-        }
-    }
 
     if (!trendingMovie) return <div className="h-[85vh] w-full bg-black"></div>;
 
@@ -78,7 +60,10 @@ const Hero = () => {
 
                 <div className="flex flex-wrap gap-4">
                     <Link to={`/movie/${trendingMovie.id}`}><Button name="Detail" size="lg"/></Link>
-                    <Button onClick={handleAddClick} name="+ Add to list" size="lg" variant="secondary"/>
+                    {isAdded ?
+                        <Button onClick={toggleWatchlist} name="Remove from list" size="lg" variant="secondary"/> :
+                        <Button onClick={toggleWatchlist} name="+ Add to list" size="lg" variant="secondary"/>
+                    }
                 </div>
             </div>
         </section>
