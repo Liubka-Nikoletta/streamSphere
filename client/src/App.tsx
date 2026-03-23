@@ -10,21 +10,19 @@ import WatchList from "./pages/WatchList.tsx";
 
 function App() {
   return (
-      <>
-          <AuthProvider>
-              <Toaster position="top-center" reverseOrder={false}/>
-              <BrowserRouter>
-                  <Routes>
-                      <Route path="/" element={<Home/>} />
-                      <Route path="/users/register" element={<Register/>}/>
-                      <Route path="/users/login" element={<Login/>}/>
-                      <Route path="/movies" element={<Movies/>}/>
-                      <Route path="/movie/:id" element={<MovieDetail />} />
-                      <Route path="/watchList" element={<WatchList/>} />
-                  </Routes>
-              </BrowserRouter>
-          </AuthProvider>
-      </>
+      <AuthProvider>
+          <Toaster position="top-center" reverseOrder={false}/>
+          <BrowserRouter>
+              <Routes>
+                  <Route path="/" element={<Home/>} />
+                  <Route path="/users/register" element={<Register/>}/>
+                  <Route path="/users/login" element={<Login/>}/>
+                  <Route path="/movies" element={<Movies/>}/>
+                  <Route path="/movie/:id" element={<MovieDetail />} />
+                  <Route path="/watchList" element={<WatchList/>} />
+              </Routes>
+          </BrowserRouter>
+      </AuthProvider>
   )
 }
 
