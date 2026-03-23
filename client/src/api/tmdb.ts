@@ -76,3 +76,19 @@ export const fetchGenres = async () => {
         return [];
     }
 }
+
+export const fetchMoviesByGenre = async (id: number | string, page: number = 1) => {
+    try{
+        const response = await tmdbApi.get(`/discover/movie`, {
+            params: {
+                with_genres: id,
+                page: page,
+                sort_by: 'popularity.desc',
+            }
+        });
+        return response.data.results;
+    } catch (error) {
+        console.error("Error fetching movies by genre", error);
+        return [];
+    }
+}

@@ -1,35 +1,46 @@
 import MovieCard from "./MovieCard.tsx";
 import type {IMovie} from "../types/movie.ts";
 import {useEffect, useState} from "react";
-import {fetchPopularMovies} from "../api/tmdb.ts";
+import {fetchPopularMovies, fetchMoviesByGenre} from "../api/tmdb.ts";
 
-const MovieList = () => {
-    const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
+interface MovieListProps {
+    genreId: string | number;
+}
+
+const MovieList = ({genreId}: MovieListProps) => {
+    const [movies, setMovies] = useState<IMovie[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
 
-    const getMovies = async (pageNum: number) => {
+    const getMovies = async (pageNum: number, isNewGenre: boolean) => {
         setLoading(true);
-        const data = await fetchPopularMovies(pageNum);
 
-        setPopularMovies(prev => {return pageNum === 1 ? data : [...prev, ...data];});
+        let data;
+        if(genreId === "All") {
+            data = await fetchPopularMovies(pageNum);
+        } else {
+            data = await fetchMoviesByGenre(genreId, pageNum);
+        }
+
+        setMovies(prev => (isNewGenre ? data : [...prev, ...data]));
         setLoading(false);
     }
 
     useEffect(() => {
-        getMovies(1);
-    }, []);
+        setPage(1);
+        getMovies(1, true);
+    }, [genreId]);
 
     const handleLoadMore = () => {
         const newPage = page + 1;
         setPage(newPage);
-        getMovies(newPage);
+        getMovies(newPage, false);
     }
 
     return (
         <section className="px-6 md:px-12 py-8 text-center">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6 pb-4 no-scrollbar">
-                {popularMovies
+                {movies
                     .filter(movie => movie.poster_path && movie.backdrop_path)
                     .map((movie) => (
                     <div key={movie.id} className="flex-shrink-0">

@@ -1,16 +1,24 @@
 import Header from "../components/Header.tsx";
 import Hero from "../components/Hero";
 import CategoryBar from "../components/CategoryBar.tsx";
-import MovieRow from "../components/MovieRow.tsx";
+import {useState} from "react";
+import MovieList from "../components/MovieList.tsx";
 
 const Home = () => {
+    const [selectedGenre, setSelectedGenre] = useState<number | string>("All");
+
     return (
         <div className="min-h-screen">
             <Header />
             <main>
                 <Hero/>
-                <CategoryBar/>
-                <MovieRow title="Popular now"/>
+                <CategoryBar
+                    activeCategory = {selectedGenre}
+                    onCategoryChange = {setSelectedGenre}
+                />
+                <MovieList
+                    genreId={selectedGenre}
+                />
             </main>
         </div>
     );

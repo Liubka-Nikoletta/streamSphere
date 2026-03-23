@@ -3,9 +3,13 @@ import {useEffect, useState} from "react";
 import {fetchGenres} from "../api/tmdb.ts";
 import type {IGenre} from "../types/genre.ts";
 
-const CategoryBar = () => {
+interface CategoryBarProps {
+    activeCategory: number | string;
+    onCategoryChange: (id: string | number) => void;
+}
+
+const CategoryBar = ({activeCategory, onCategoryChange}: CategoryBarProps) => {
     const [genres, setGenres] = useState<IGenre[]>([]);
-    const [activeCategory, setActiveCategory] = useState<string | number>("All");
 
     useEffect(() => {
         const getCategories = async () => {
@@ -21,7 +25,7 @@ const CategoryBar = () => {
                 <li key={genre.id}>
                     <Button name={genre.name}
                     variant={activeCategory === genre.id ? "primary" : "secondary"}
-                    onClick={() => setActiveCategory(genre.id)}/>
+                    onClick={() => onCategoryChange(genre.id)}/>
                 </li>
             ))}
         </ul>
