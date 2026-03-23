@@ -1,8 +1,10 @@
 import {Link, useNavigate} from "react-router-dom";
 import Input from "../components/Input";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Menu, User, X} from 'lucide-react';
 import {useAuthCheck} from "../hooks/useAuthCheck.ts";
+import type {IMovie} from "../types/movie.ts";
+import {searchMovies} from "../api/tmdb.ts";
 
 const Header = () => {
     const [searchText, setSearchText] = useState<string>("");
@@ -10,6 +12,27 @@ const Header = () => {
     const {isLoggedIn, logOut, user} = useAuthCheck();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const navigate = useNavigate();
+    const [searchResults, setSearchResults] = useState<IMovie[]>([]);
+
+    useEffect(() => {
+        if(searchText.trim().length < 2) {
+            setSearchResults([]);
+            return;
+        }
+
+        const delayDebounceFn = setTimeout(async () => {
+            const results = await searchMovies(searchText);
+            setSearchResults(results);
+        }, 500);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchText]);
+
+    useEffect(() => {
+        const handleClickOutside = () => {setSearchResults([]); setSearchText('')}
+        window.addEventListener("click", handleClickOutside);
+        return () => window.removeEventListener("click", handleClickOutside);
+    }, []);
 
     return (
         <>
@@ -25,7 +48,7 @@ const Header = () => {
                 </nav>
 
                 <div className="flex items-center gap-2 md:gap-4">
-                    <div className="hidden sm:block sm:w-40 md:w-64">
+                    <div className="hidden sm:block sm:w-40 md:w-64 relative">
                         <Input id="search"
                                name="search"
                                noLabel={true}
@@ -33,6 +56,32 @@ const Header = () => {
                                onChange={(e) => setSearchText(e.target.value)}
                                placeholder="Search..."
                         />
+
+                        {searchResults.length > 0 && (
+                            <div className="absolute top-full left-0 w-full mt-2 bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl overflow-hidden z-[100]">
+                                {searchResults.map((movie) => (
+                                    <Link key={movie.id}
+                                          to={`/movie/${movie.id}`}
+                                          onClick={() => {setSearchResults([]); setSearchText('');}}
+                                          className="flex items-center gap-3 p-2 hover:bg-white/10 transition-colors border-b border-white/5 last:border-none"
+                                    >
+                                        {movie.poster_path ? (
+                                            <img
+                                                src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
+                                                alt={movie.title}
+                                                className="w-10 h-14 object-cover rounded"
+                                            />
+                                        ) : (
+                                            <div className="w-10 h-14 bg-gray-800 rounded flex items-center justify-center text-[10px]">No img</div>
+                                        )}
+                                        <div className="flex flex-col overflow-hidden">
+                                            <span className="text-sm font-medium text-white truncate">{movie.title}</span>
+                                            <span className="text-xs text-gray-400">{movie.release_date?.split('-')[0]}</span>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div

@@ -92,3 +92,20 @@ export const fetchMoviesByGenre = async (id: number | string, page: number = 1) 
         return [];
     }
 }
+
+export const searchMovies = async (query: string) => {
+    try{
+        const response = await tmdbApi.get('/search/movie', {
+            params: {
+                query: query,
+                page: 1,
+                language: 'en-US',
+            }
+        });
+        return response.data.results.slice(0, 5);
+    } catch(error){
+        console.error("Search error", error);
+        return [];
+    }
+
+}
