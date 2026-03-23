@@ -29,9 +29,13 @@ const Header = () => {
     }, [searchText]);
 
     useEffect(() => {
-        const handleClickOutside = () => {setSearchResults([]); setSearchText('')}
-        window.addEventListener("click", handleClickOutside);
-        return () => window.removeEventListener("click", handleClickOutside);
+        const handleClickOutside = () => {
+            setSearchResults([]);
+            setSearchText('');
+        };
+
+        globalThis.addEventListener("click", handleClickOutside);
+        return () => globalThis.removeEventListener("click", handleClickOutside);
     }, []);
 
     return (
@@ -84,11 +88,16 @@ const Header = () => {
                         )}
                     </div>
 
-                    <div
+                    <button
+                        type='button'
                         onClick={() => setIsProfileOpen(!isProfileOpen)}
-                        className="hidden md:flex w-8 h-8 md:w-9 md:h-9 bg-red-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-lg shadow-red-900/20">
-                        <User size={18} strokeWidth={2.5} />
-                    </div>
+                        className="hidden md:flex w-8 h-8 md:w-9 md:h-9 bg-red-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-lg shadow-red-900/20"
+                        aria-label="User Profile"
+                        aria-haspopup="true"
+                        aria-expanded={isProfileOpen}
+                    >
+                        <User size={18} strokeWidth={2.5}/>
+                    </button>
 
                     {isProfileOpen && (
                         <div className="absolute top-12 right-1 mt-3 w-40 bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200">
